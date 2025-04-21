@@ -1,5 +1,9 @@
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview"
+
+{
+  "env": {
+    "VITE_WEATHERAPI_KEY": {
+      "value": "your-key-here",
+      "target": ["production", "preview"]
+    }
+  }
 }
