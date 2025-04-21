@@ -10,8 +10,7 @@ export function AppProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Mock API URL - use environment variable in production
-  const API_URL = process.env.REACT_APP_API_URL || 'https://65f5ee0c41d90c1c5e0a66da.mockapi.io/api/v1/tasks';
+  const API_URL = 'http://localhost:3001/tasks';
 
   const fetchTasks = async () => {
     try {
@@ -19,7 +18,7 @@ export function AppProvider({ children }) {
       const response = await axios.get(API_URL);
       setTasks(response.data);
     } catch (err) {
-      setError('Failed to fetch tasks');
+      setError('Failed to fetch tasks. Is JSON Server running?');
     } finally {
       setLoading(false);
     }
@@ -58,24 +57,9 @@ export function AppProvider({ children }) {
     }
   };
 
-  const fetchWeather = async (loc) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric`
-      );
-      setWeather(response.data);
-    } catch (err) {
-      setError('Failed to fetch weather data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     fetchTasks();
-    fetchWeather(location);
-  }, [location]);
+  }, []);
 
   return (
     <AppContext.Provider
@@ -89,7 +73,6 @@ export function AppProvider({ children }) {
         addTask,
         deleteTask,
         toggleTask,
-        fetchWeather,
       }}
     >
       {children}
